@@ -175,3 +175,178 @@ function redraw(){
     );
 
 }
+/*
+==========================================
+BEAST Tag Generator
+Part 2/20
+UI Controls
+==========================================
+*/
+
+/* ---------- Validation ---------- */
+
+function normalizeHex(hex){
+
+    hex = hex.trim();
+
+    if(!hex.startsWith("#")){
+
+        hex = "#" + hex;
+
+    }
+
+    hex = hex.toUpperCase();
+
+    if(/^#[0-9A-F]{6}$/.test(hex)){
+
+        return hex;
+
+    }
+
+    return null;
+
+}
+
+/* ---------- Sync UI ---------- */
+
+function updateUI(){
+
+    leftPicker.value = leftColor;
+
+    rightPicker.value = rightColor;
+
+    leftHex.value = leftColor.toUpperCase();
+
+    rightHex.value = rightColor.toUpperCase();
+
+}
+
+/* ---------- Picker Events ---------- */
+
+leftPicker.addEventListener("input",()=>{
+
+    leftColor = leftPicker.value.toUpperCase();
+
+    updateUI();
+
+    redraw();
+
+});
+
+rightPicker.addEventListener("input",()=>{
+
+    rightColor = rightPicker.value.toUpperCase();
+
+    updateUI();
+
+    redraw();
+
+});
+
+/* ---------- Hex Events ---------- */
+
+leftHex.addEventListener("change",()=>{
+
+    const value = normalizeHex(leftHex.value);
+
+    if(value){
+
+        leftColor = value;
+
+        updateUI();
+
+        redraw();
+
+    }
+
+    else{
+
+        updateUI();
+
+    }
+
+});
+
+rightHex.addEventListener("change",()=>{
+
+    const value = normalizeHex(rightHex.value);
+
+    if(value){
+
+        rightColor = value;
+
+        updateUI();
+
+        redraw();
+
+    }
+
+    else{
+
+        updateUI();
+
+    }
+
+});
+
+/* ---------- Swap ---------- */
+
+swapBtn.addEventListener("click",()=>{
+
+    const temp = leftColor;
+
+    leftColor = rightColor;
+
+    rightColor = temp;
+
+    updateUI();
+
+    redraw();
+
+});
+
+/* ---------- Random ---------- */
+
+function randomHex(){
+
+    const n = Math.floor(
+
+        Math.random()*16777215
+
+    );
+
+    return "#" +
+
+    n
+
+    .toString(16)
+
+    .padStart(6,"0")
+
+    .toUpperCase();
+
+}
+
+randomBtn.addEventListener("click",()=>{
+
+    leftColor = randomHex();
+
+    rightColor = randomHex();
+
+    updateUI();
+
+    redraw();
+
+});
+
+/* ---------- PNG Button Placeholder ---------- */
+
+downloadBtn.addEventListener("click",()=>{
+
+    alert("PNG export coming in Part 18.");
+
+});
+
+/* ---------- Initialize ---------- */
+
+updateUI();
