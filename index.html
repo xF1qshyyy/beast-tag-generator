@@ -1,10 +1,82 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BEAST Tag Generator</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+
+<div class="container">
+
     <h1>BEAST Tag Generator</h1>
-    <p>Website coming soon...</p>
+
+    <div class="controls">
+
+        <div class="colorBox">
+            <label>Left Color</label>
+
+            <input
+                type="color"
+                id="leftPicker"
+                value="#cc0327">
+
+            <input
+                type="text"
+                id="leftHex"
+                value="#CC0327"
+                maxlength="7">
+        </div>
+
+        <div class="colorBox">
+            <label>Right Color</label>
+
+            <input
+                type="color"
+                id="rightPicker"
+                value="#630af3">
+
+            <input
+                type="text"
+                id="rightHex"
+                value="#630AF3"
+                maxlength="7">
+        </div>
+
+    </div>
+
+    <div class="buttons">
+
+        <button id="swapBtn">
+            ⇄ Swap
+        </button>
+
+        <button id="randomBtn">
+            🎲 Random
+        </button>
+
+        <button id="downloadBtn">
+            Download PNG
+        </button>
+
+    </div>
+
+    <div class="preview">
+
+        <canvas
+            id="tagCanvas"
+            width="800"
+            height="160">
+        </canvas>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
 </body>
 </html>
