@@ -10,7 +10,7 @@ ctx.imageSmoothingEnabled = false;
 
 const baseImage = new Image();
 
-baseImage.src = "beast-base.png";
+baseImage.src = "beasttagbase.png";
 
 baseImage.onload = () => {
 
