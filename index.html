@@ -1,82 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BEAST Tag Generator</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BEAST Tag Generator</title>
+  <meta name="description" content="Generate pixel-perfect Minecraft-style BEAST rank tags from two colors, entirely computed — no AI image generation." />
 
-    <link rel="stylesheet" href="style.css">
+  <!-- Fonts: a blocky pixel display face for the identity, Inter for UI copy,
+       JetBrains Mono for hex codes / anything numeric. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
 
-<div class="container">
+  <div class="app-shell">
 
-    <h1>BEAST Tag Generator</h1>
+    <!-- ============================================================
+         HEADER
+         ============================================================ -->
+    <header class="app-header">
+      <div class="app-header__title">
+        <span class="pixel-dot" aria-hidden="true"></span>
+        <h1>BEAST&nbsp;TAG&nbsp;GENERATOR</h1>
+      </div>
+      <p class="app-header__subtitle">
+        Two colors in, a pixel-perfect 40&times;8 rank tag out. Every pixel is
+        computed mathematically from a gradient background, a tinted
+        letterform, and a derived shadow — nothing is hardcoded.
+      </p>
+    </header>
 
-    <div class="controls">
+    <!-- ============================================================
+         MAIN LAYOUT
+         ============================================================ -->
+    <main class="layout">
 
-        <div class="colorBox">
-            <label>Left Color</label>
-
-            <input
-                type="color"
-                id="leftPicker"
-                value="#cc0327">
-
-            <input
-                type="text"
-                id="leftHex"
-                value="#CC0327"
-                maxlength="7">
+      <!-- ---------------- PREVIEW PANEL ---------------- -->
+      <section class="panel preview-panel" aria-label="Tag preview">
+        <div class="panel__header">
+          <h2>Preview</h2>
+          <label class="grid-toggle">
+            <input type="checkbox" id="gridToggle" />
+            <span>Pixel grid</span>
+          </label>
         </div>
 
-        <div class="colorBox">
-            <label>Right Color</label>
-
-            <input
-                type="color"
-                id="rightPicker"
-                value="#630af3">
-
-            <input
-                type="text"
-                id="rightHex"
-                value="#630AF3"
-                maxlength="7">
+        <div class="preview-wrapper" id="previewWrapper">
+          <canvas
+            id="previewCanvas"
+            class="preview-canvas"
+            aria-label="Generated BEAST tag, enlarged with nearest-neighbor scaling"
+          ></canvas>
         </div>
 
-    </div>
+        <p class="preview-meta">
+          Real size: <strong>40&times;8px</strong> &middot; displayed enlarged,
+          exported at true size.
+        </p>
 
-    <div class="buttons">
-
-        <button id="swapBtn">
-            ⇄ Swap
+        <button type="button" id="downloadBtn" class="btn btn--primary btn--block">
+          Download PNG
         </button>
 
-        <button id="randomBtn">
-            🎲 Random
-        </button>
+        <p class="status-text" id="statusText" role="status"></p>
+      </section>
 
-        <button id="downloadBtn">
-            Download PNG
-        </button>
+      <!-- ---------------- CONTROLS PANEL ---------------- -->
+      <section class="panel controls-panel" aria-label="Color controls">
+        <h2>Colors</h2>
 
-    </div>
+        <div class="color-field">
+          <label for="color1Hex">Color 1 <span class="color-field__hint">(left)</span></label>
+          <div class="color-field__row">
+            <input type="color" id="color1Picker" class="color-swatch" value="#FF5C8A" />
+            <input
+              type="text"
+              id="color1Hex"
+              class="hex-input"
+              value="#FF5C8A"
+              maxlength="7"
+              autocomplete="off"
+              spellcheck="false"
+              inputmode="text"
+              aria-label="Color 1 hex code"
+            />
+          </div>
+        </div>
 
-    <div class="preview">
+        <div class="color-field">
+          <label for="color2Hex">Color 2 <span class="color-field__hint">(right)</span></label>
+          <div class="color-field__row">
+            <input type="color" id="color2Picker" class="color-swatch" value="#5C7CFF" />
+            <input
+              type="text"
+              id="color2Hex"
+              class="hex-input"
+              value="#5C7CFF"
+              maxlength="7"
+              autocomplete="off"
+              spellcheck="false"
+              inputmode="text"
+              aria-label="Color 2 hex code"
+            />
+          </div>
+        </div>
 
-        <canvas
-            id="tagCanvas"
-            width="800"
-            height="160">
-        </canvas>
+        <div class="action-row">
+          <button type="button" id="swapBtn" class="btn btn--ghost">
+            <span aria-hidden="true">&#8646;</span> Swap
+          </button>
+          <button type="button" id="randomBtn" class="btn btn--ghost">
+            <span aria-hidden="true">&#9861;</span> Random
+          </button>
+        </div>
 
-    </div>
+        <div class="panel__divider" role="presentation"></div>
 
-</div>
+        <details class="how-it-works">
+          <summary>How the colors are used</summary>
+          <ul>
+            <li>The <strong>background</strong> is a smooth gradient from Color&nbsp;1 (left) to Color&nbsp;2 (right), with a slight top highlight, bottom shading, and darkened edges.</li>
+            <li>The <strong>letters</strong> stay mostly white but pick up a subtle tint mixed from both colors.</li>
+            <li>The <strong>shadow</strong> is derived from the letter color — darker and less saturated — never a fixed gray.</li>
+          </ul>
+        </details>
+      </section>
 
-<script src="script.js"></script>
+    </main>
 
+    <!-- ============================================================
+         FOOTER
+         ============================================================ -->
+    <footer class="app-footer">
+      <p>
+        Reads <code>beasttagbase.png</code> (40&times;8px) if present next to
+        these files; otherwise falls back to a built-in template. Rendered
+        entirely on-device — nothing is uploaded anywhere.
+      </p>
+    </footer>
+
+  </div>
+
+  <script src="script.js" defer></script>
 </body>
 </html>
